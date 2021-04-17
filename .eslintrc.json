@@ -1,9 +1,7 @@
 {
     "extends": [
-        "airbnb",
-        "prettier",
-        "prettier/react",
-        "plugin:prettier/recommended",
+        "standard",
+        "standard-react"
     ],
     "plugins": [
         "prettier",
@@ -21,6 +19,7 @@
         }
     },
     "rules": {
+        "no-tabs": ["warn", { "allowIndentationTabs": true }],
         "arrow-parens": [
             "error",
             "as-needed"

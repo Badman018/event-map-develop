@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { useDispatch, useSelector } from 'react-redux'
+import { signInByEmail, signInByGoogle } from '../../../actions'
+import { Redirect } from 'react-router'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,18 +33,20 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const classes = useStyles()
-  const errorMessage = useSelector(state => state.error)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
   const dispatch = useDispatch()
   const error = useSelector(state => state.error.error)
+  const isAuthed = useSelector(state => state.user.isAuthed)
 
   const handleSignIn = () => {
-    dispatch({ type: 'SIGN_IN_EMAIL_REQUEST', payload: { email, password } })
+    dispatch(signInByEmail({ email, password }))
   }
-  return (
+  const handleSignInGoogle = () => {
+    dispatch(signInByGoogle())
+  }
+  return !isAuthed
+    ? (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
@@ -86,13 +90,24 @@ const SignIn = props => {
 					variant="contained"
 					color="primary"
 					className={classes.submit}
-					onClick={() => handleSignIn()}
+					onClick={handleSignIn}
 				>
 					Sign In
 				</Button>
+				<Button
+				type="submit"
+				fullWidth
+				variant="contained"
+				color="primary"
+				className={classes.submit}
+				onClick={handleSignInGoogle}
+				>
+					Sign In by Google
+				</Button>
 			</div>
 		</Container>
-  )
+      )
+    : <Redirect to={'/main'}/>
 }
 
 export default SignIn

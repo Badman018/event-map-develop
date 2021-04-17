@@ -1,4 +1,4 @@
-const SET_ERROR = 'event-map/error/SET_ERROR'
+import { SET_ERROR } from '../actions'
 
 const initialState = {
   error: {},
@@ -16,7 +16,5 @@ const errorReducer = (state = initialState, action) => {
       return state
   }
 }
-
-export const setError = payload => ({ type: SET_ERROR, payload })
 
 export default errorReducer
