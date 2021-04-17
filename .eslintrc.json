@@ -1,7 +1,9 @@
 {
     "extends": [
-        "standard",
-        "standard-react"
+        "airbnb",
+        "prettier",
+        "prettier/react",
+        "plugin:prettier/recommended",
     ],
     "plugins": [
         "prettier",

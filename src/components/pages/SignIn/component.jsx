@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import fire from './../../../firebase'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,83 +31,67 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const classes = useStyles()
+  const errorMessage = useSelector(state => state.error)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  const [error, setError] = useState(false)
+  const dispatch = useDispatch()
+  const error = useSelector(state => state.error.error)
 
   const handleSignIn = () => {
-    fire
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(response => console.log(response))
-      .catch(error => {
-        switch (error.code) {
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-            setEmailError(error.message)
-            setError(true)
-            break
-          case 'auth/wrong-password':
-            setPasswordError(error.message)
-            setError(true)
-            break
-        }
-      })
+    dispatch({ type: 'SIGN_IN_EMAIL_REQUEST', payload: { email, password } })
   }
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            error={error}
-            helperText={emailError}
-            onChange={event => setEmail(event.target.value)}/>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            error={error}
-            helperText={passwordError}
-            onChange={event => setPassword(event.target.value)}/>
-        </form>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={() => handleSignIn()}
-        >
-          Sign In
-        </Button>
-      </div>
-    </Container>
+		<Container component="main" maxWidth="xs">
+			<CssBaseline />
+			<div className={classes.paper}>
+				<Avatar className={classes.avatar}>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign in
+				</Typography>
+				<form className={classes.form} noValidate>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						id="email"
+						label="Email Address"
+						name="email"
+						autoComplete="email"
+						autoFocus
+						error={error.code === 'auth/invalid-email' || false}
+						helperText={error.code === 'auth/invalid-email' && error.message}
+						onChange={event => setEmail(event.target.value)}/>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="password"
+						label="Password"
+						type="password"
+						id="password"
+						autoComplete="current-password"
+						error={error.code === 'auth/wrong-password' || false}
+						helperText={error.code === 'auth/wrong-password' && error.message}
+						onChange={event => setPassword(event.target.value)}/>
+				</form>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={classes.submit}
+					onClick={() => handleSignIn()}
+				>
+					Sign In
+				</Button>
+			</div>
+		</Container>
   )
 }
 
