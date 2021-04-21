@@ -6,11 +6,10 @@ import './App.css'
 import Router from './components/wrappers/Router'
 
 const App = props => {
-	return (
-		<Provider store={store}>
-			<Router/>
-		</Provider>
-	)
+  return (
+  <Provider store={store}>
+      <Router/>
+  </Provider>)
 }
 
 export default App

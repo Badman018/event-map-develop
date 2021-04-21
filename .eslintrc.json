@@ -19,8 +19,6 @@
       }
     },
     "rules": {
-      "no-tabs": ["error", { "allowIndentationTabs": true }],
-      "indent": [2, "tab"],
       "arrow-parens": ["error", "as-needed"],
       "semi":"error",
       "prefer-destructuring":"error",

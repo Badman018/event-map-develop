@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect, Route } from 'react-router'
+import { Route } from 'react-router'
 
 import firebase from '@/utils/firebase'
 
 const SecureRoute = props => {
-	const { path, component } = props
-	const [currentUser, setCurrentUser] = useState(null)
-	const [pending, setPending] = useState(true)
+  const { path, component } = props
+  const [authUser, setAuthUser] = useState(null)
+  useEffect(() => {
+    const unlisten = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setAuthUser(user)
+      } else {
+        setAuthUser(null)
+      }
+    })
+    return () => {
+      unlisten()
+    }
+  })
 
-	useEffect(() => {
-		firebase.auth().onAuthStateChanged(user => {
-			setCurrentUser(user)
-			setPending(false)
-		})
-	}, [])
-
-	if (pending) {
-		return <>Loading...</>
-	}
-
-	return currentUser ? <Route path={path} component={component} /> : <Redirect to="/" />
+  return authUser ? <Route path={path} component={component} /> : null
 }
 
 SecureRoute.propTypes = {
-	path: PropTypes.string,
-	component: PropTypes.elementType,
+  path: PropTypes.string,
+  component: PropTypes.elementType,
 }
 
 export default SecureRoute
