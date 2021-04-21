@@ -1,2 +1,2 @@
-export * from './userActionsCreator'
-export * from './errorActionsCreator'
+export * from './user'
+export * from './error'

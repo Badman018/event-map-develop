@@ -6,14 +6,14 @@ import SignIn from '../pages/SignIn'
 import SecureRoute from './SecureRoute'
 
 const Router = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <SecureRoute path={'/main'} component={ () => <Main/>} />
-        <Route exact path="/" component={() => <SignIn />} />
-      </Switch>
-    </BrowserRouter>
-  )
+	return (
+		<BrowserRouter>
+			<Switch>
+				<SecureRoute exact path={'/main'} component={ () => <Main/>} />
+				<Route exact path="/" component={() => <SignIn />} />
+			</Switch>
+		</BrowserRouter>
+	)
 }
 
 export default Router

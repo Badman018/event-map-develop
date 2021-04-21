@@ -3,26 +3,35 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBNR3t8sLK95MFmQM474zGIhX-GTwusWKk',
-  authDomain: 'event-map-2f3a4.firebaseapp.com',
-  projectId: 'event-map-2f3a4',
-  storageBucket: 'event-map-2f3a4.appspot.com',
-  messagingSenderId: '97677226621',
-  appId: '1:97677226621:web:6d3fb20c836ece29f03714',
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBSAE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBSAE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBSAE_APP_ID,
 }
 
-const fire = firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig)
+
 const provider = new firebase.auth.GoogleAuthProvider()
+export default firebase
 
 export const signInByEmailFirebase = (email, password) => {
-  return fire
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(({ user }) => user)
+	return firebase
+		.auth()
+		.signInWithEmailAndPassword(email, password)
+		.then(({ user }) => user)
+}
+
+export const signOutFirebase = () => {
+	return firebase
+		.auth()
+		.signOut()
 }
 
 export const signInByGoogleFirebase = () => {
-  return fire.auth()
-    .signInWithPopup(provider)
-    .then(({ user }) => user)
+	return firebase
+		.auth()
+		.signInWithPopup(provider)
+		.then(({ user }) => user)
 }
