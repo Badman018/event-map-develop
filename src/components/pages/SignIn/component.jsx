@@ -48,16 +48,16 @@ const SignIn = props => {
   }
 
   return (
-  <SignInContainer>
-    <Container component="main" maxWidth="xs">
-       <CssBaseline />
-       <div className={classes.paper}>
-         <Avatar className={classes.avatar}>
+    <SignInContainer>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
-         </Avatar>
-         <Typography component="h1" variant="h5">Sign in</Typography>
-         <form className={classes.form} noValidate>
-           <TextField
+          </Avatar>
+          <Typography component="h1" variant="h5">Sign in</Typography>
+          <form className={classes.form} noValidate>
+            <TextField
               variant="outlined"
               margin="normal"
               required
@@ -83,37 +83,37 @@ const SignIn = props => {
               error={errorCode === 'auth/wrong-password' || false}
               helperText={errorCode === 'auth/wrong-password' && errorMessage}
               onChange={event => setPassword(event.target.value)}/>
-         </form>
-         <NavLink
-          to="/main"
-         >
-           <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handlerSignInByEmailAndPassword}
-           >Sign In
-           </Button>
-         </NavLink>
-         <p>or</p>
+          </form>
           <NavLink
-          to="/main"
+            to="/main"
           >
             <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handlerSignInByGoogle}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handlerSignInByEmailAndPassword}
+            >Sign In
+            </Button>
+          </NavLink>
+          <p>or</p>
+          <NavLink
+            to="/main"
+          >
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handlerSignInByGoogle}
             >Sign In by Google
             </Button>
           </NavLink>
-       </div>
-    </Container>
-  </SignInContainer>
+        </div>
+      </Container>
+    </SignInContainer>
   )
 }
 

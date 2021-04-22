@@ -20,7 +20,7 @@ const SecureRoute = props => {
     }
   })
 
-  return authUser ? <Route path={path} component={component} /> : null
+  return authUser && <Route path={path} component={component} />
 }
 
 SecureRoute.propTypes = {
