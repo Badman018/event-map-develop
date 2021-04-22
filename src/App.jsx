@@ -1,15 +1,17 @@
 import React from 'react'
-import { store } from './reducers/store'
 import { Provider } from 'react-redux'
 
-import './App.css'
+import { store } from './reducers/store'
 import Router from './components/wrappers/Router'
+
+import './App.css'
 
 const App = props => {
   return (
-  <Provider store={store}>
+    <Provider store={store}>
       <Router/>
-  </Provider>)
+    </Provider>
+  )
 }
 
 export default App

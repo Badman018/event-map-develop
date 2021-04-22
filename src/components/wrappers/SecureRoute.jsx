@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Route } from 'react-router'
-
+import { Route, useHistory } from 'react-router-dom'
 import firebase from '@/utils/firebase'
 
 const SecureRoute = props => {
+  const history = useHistory()
   const { path, component } = props
   const [authUser, setAuthUser] = useState(null)
   useEffect(() => {
-    const unlisten = firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setAuthUser(user)
+        history.push(path)
       } else {
         setAuthUser(null)
+        history.push('/')
       }
     })
-    return () => {
-      unlisten()
-    }
-  })
+  }, [])
 
   return authUser && <Route path={path} component={component} />
 }
