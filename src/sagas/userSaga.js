@@ -12,20 +12,6 @@ function * userSignInByEmailAndPassword ({ payload }) {
   }
 }
 
-function * userSignInValidation ({ payload }) {
-  try {
-    yield firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        payload(user)
-      } else {
-        console.log(user)
-      }
-    })
-  } catch (e) {
-    yield put(setError(e.code, e.message))
-  }
-}
-
 function * userSignInByGoogle () {
   try {
     const userData = yield signInByGoogleFirebase()
@@ -38,5 +24,4 @@ function * userSignInByGoogle () {
 export function * userRequestWatcher () {
   yield takeEvery(SIGN_IN_EMAIL_REQUEST, userSignInByEmailAndPassword)
   yield takeEvery(SIGN_IN_GOOGLE_REQUEST, userSignInByGoogle)
-  yield takeEvery(SIGN_IN_VALIDATION, userSignInValidation)
 }
