@@ -1,4 +1,4 @@
-import { SAVE_USER_DATA } from '../actions'
+import { REMOVE_USER_DATA, SAVE_USER_DATA } from '../actions'
 
 const initialState = {
   user: {},
@@ -10,6 +10,12 @@ const userReducer = (state = initialState, action) => {
     case SAVE_USER_DATA: {
       return {
         ...state, user: { ...action.payload }, isAuthed: true,
+      }
+    }
+    case REMOVE_USER_DATA: {
+      return {
+        user: {},
+        isAuthed: false,
       }
     }
     default:

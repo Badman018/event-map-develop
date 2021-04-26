@@ -1,22 +1,34 @@
 import React from 'react'
+import { MapContainer, TileLayer } from 'react-leaflet'
+import { useSelector } from 'react-redux'
 
-import Button from '@material-ui/core/Button'
+import Preloader from '../../common/Preloader/Preloader'
+import BasicLayout from '../../layouts/BasicLayout/component'
 
-import { signOutFirebase } from '@/utils/firebase'
+import { Container } from './styles'
 
 const Main = () => {
-  const handlerOnClickSignOut = () => {
-    signOutFirebase()
+  const currentUser = useSelector(state => state.user)
+
+  if (!currentUser.isAuthed) {
+    return <Preloader/>
   }
+
   return (
-  <Button
-    type="submit"
-    fullWidth
-    variant="contained"
-    color="primary"
-    onClick={handlerOnClickSignOut}
-  >Sign Out
-  </Button>
+    <BasicLayout>
+      <Container>
+        <MapContainer
+          center={[51.505, -0.09]}
+          zoom={10}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+        </MapContainer>
+      </Container>
+    </BasicLayout>
   )
 }
 
