@@ -11,7 +11,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <SecureRoute path="/main" component={ () => <Main/>} />
+        <SecureRoute path="/main" component={Main} />
         <Route exact path="/" component={() => <SignIn />} />
       </Switch>
     </BrowserRouter>

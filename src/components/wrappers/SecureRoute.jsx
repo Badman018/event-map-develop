@@ -6,20 +6,20 @@ import firebase from '@/utils/firebase'
 const SecureRoute = props => {
   const history = useHistory()
   const { path, component } = props
-  const [authUser, setAuthUser] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setAuthUser(user)
+        setUserProfile(user)
         history.push(path)
       } else {
-        setAuthUser(null)
+        setUserProfile(null)
         history.push('/')
       }
     })
   }, [])
 
-  return authUser && <Route path={path} component={component} />
+  return userProfile && <Route path={path} component={component} />
 }
 
 SecureRoute.propTypes = {
