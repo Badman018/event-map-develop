@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const classes = useStyles()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('matvei@gmail.com')
+  const [password, setPassword] = useState('123123')
   const dispatch = useDispatch()
   const errorCode = useSelector(state => state.error.errorCode)
   const errorMessage = useSelector(state => state.error.errorMessage)
@@ -67,6 +67,7 @@ const SignIn = props => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
               error={errorCode === 'auth/invalid-email' || false}
               helperText={errorCode === 'auth/invalid-email' && errorMessage}
               onChange={event => setEmail(event.target.value)}
@@ -80,6 +81,7 @@ const SignIn = props => {
               label="Password"
               type="password"
               id="password"
+              value={password}
               autoComplete="current-password"
               error={errorCode === 'auth/wrong-password' || false}
               helperText={errorCode === 'auth/wrong-password' && errorMessage}

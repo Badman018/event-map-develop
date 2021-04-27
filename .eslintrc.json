@@ -40,8 +40,7 @@
     "react/jsx-closing-bracket-location": [
       2,
       {
-        "nonEmpty": "line-aligned",
-        "selfClosing": "after-props"
+        "nonEmpty": "tag-aligned"
       }
     ],
     "react/jsx-max-props-per-line": [

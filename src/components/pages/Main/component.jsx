@@ -15,7 +15,8 @@ const Main = () => {
     variant="contained"
     color="primary"
     onClick={handlerOnClickSignOut}
-  >Sign Out
+  >
+    Sign Out
   </Button>
   )
 }

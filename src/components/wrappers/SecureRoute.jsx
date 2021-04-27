@@ -1,25 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Route, useHistory } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import firebase from '@/utils/firebase'
 
-const SecureRoute = props => {
-  const history = useHistory()
-  const { path, component } = props
+import Preloader from './../common/Preloader/Preloader'
+
+const SecureRoute = ({ component: Component, ...rest }) => {
   const [userProfile, setUserProfile] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(true)
+
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
         setUserProfile(user)
-        history.push(path)
+        setIsLoaded(false)
       } else {
-        setUserProfile(null)
-        history.push('/')
+        setIsLoaded(true)
       }
     })
-  }, [])
+    return () => {
+      unsubscribe()
+    }
+  })
 
-  return userProfile && <Route path={path} component={component} />
+  return (
+    <Route
+      {...rest}
+      render={
+        props => {
+          if (isLoaded) {
+            return <Preloader/>
+          }
+          if (userProfile) {
+            return <Component {...props} />
+          }
+          return <Redirect to="/"/>
+        }
+      }
+    />
+  )
 }
 
 SecureRoute.propTypes = {

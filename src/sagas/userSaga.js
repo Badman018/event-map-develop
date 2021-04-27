@@ -1,7 +1,6 @@
 import { put, takeEvery } from '@redux-saga/core/effects'
-import { saveUserData, setError, SIGN_IN_EMAIL_REQUEST, SIGN_IN_GOOGLE_REQUEST, SIGN_IN_VALIDATION } from '../actions'
+import { saveUserData, setError, SIGN_IN_EMAIL_REQUEST, SIGN_IN_GOOGLE_REQUEST } from '../actions'
 import { signInByEmailFirebase, signInByGoogleFirebase } from './../utils/firebase'
-import firebase from '@/utils/firebase'
 
 function * userSignInByEmailAndPassword ({ payload }) {
   try {
