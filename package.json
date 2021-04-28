@@ -17,7 +17,6 @@
     "eslint-plugin-promise": "^5.1.0",
     "firebase": "^8.4.1",
     "prettier": "^2.2.1",
-    "promise-status-async": "^1.1.11",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-app-rewire-alias": "^1.0.3",
