@@ -1,51 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Redirect, Route } from 'react-router-dom'
+import { Route, useHistory } from 'react-router-dom'
 
+import { LinearProgress } from '@material-ui/core'
 import firebase from '@/utils/firebase'
 import { SIGN_IN_PAGE_PATH } from '@/constants/paths'
+import { EVENT_MAP_PAGE_PATH } from '../../constants/paths'
 
-import Preloader from './../common/Preloader/Preloader'
-
-const SecureRoute = ({ component: Component, ...rest }) => {
+const SecureRoute = props => {
+  const history = useHistory()
   const [authentication, setAuthState] = useState({
     authenticated: false,
-    initializing: true,
+    initialized: false,
   })
 
   useEffect(() => {
+    setAuthState({
+      authenticated: false,
+      initialized: false,
+    })
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setAuthState({
           authenticated: true,
-          initializing: false,
+          initialized: true,
         })
+        history.push(EVENT_MAP_PAGE_PATH)
       } else {
         setAuthState({
           authenticated: false,
-          initializing: true,
+          initialized: true,
         })
+        history.push(SIGN_IN_PAGE_PATH)
       }
     })
-    return () => unsubscribe()
+    return () => unsubscribe
   }, [])
 
-  return (
-    <Route
-      {...rest}
-      render={
-        props => {
-          if (authentication.authenticated) {
-            return <Component {...props} />
-          }
-          if (authentication.initializing) {
-            return <Preloader/>
-          }
-          return <Redirect to={SIGN_IN_PAGE_PATH}/>
-        }
-      }
-    />
-  )
+  if (!authentication.initialized) {
+    return (<LinearProgress />)
+  }
+  if (authentication.authenticated) {
+    return (<Route {...props} />)
+  }
+  return (null)
 }
 
 SecureRoute.propTypes = {

@@ -2,11 +2,13 @@ import React from 'react'
 
 import Button from '@material-ui/core/Button'
 
-import { signOutFirebase } from '@/utils/firebase'
+import { useDispatch } from 'react-redux'
+import { signOutAuth } from '../../../actions'
 
 const Main = () => {
+  const dispatch = useDispatch()
   const handlerOnClickSignOut = () => {
-    signOutFirebase()
+    dispatch(signOutAuth())
   }
   return (
   <Button
