@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Route, useHistory } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 
 import { LinearProgress } from '@material-ui/core'
 import firebase from '@/utils/firebase'
 import { SIGN_IN_PAGE_PATH } from '@/constants/paths'
-import { EVENT_MAP_PAGE_PATH } from '../../constants/paths'
 
 const SecureRoute = props => {
-  const history = useHistory()
   const [authentication, setAuthState] = useState({
     authenticated: false,
     initialized: false,
@@ -16,38 +14,38 @@ const SecureRoute = props => {
 
   useEffect(() => {
     setAuthState({
-      authenticated: false,
       initialized: false,
+      authenticated: false,
     })
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      console.log(user)
       if (user) {
         setAuthState({
-          authenticated: true,
           initialized: true,
+          authenticated: true,
         })
-        history.push(EVENT_MAP_PAGE_PATH)
       } else {
         setAuthState({
-          authenticated: false,
           initialized: true,
+          authenticated: false,
         })
-        history.push(SIGN_IN_PAGE_PATH)
       }
     })
     return () => unsubscribe
   }, [])
 
   if (!authentication.initialized) {
-    return (<LinearProgress />)
+    return <LinearProgress/>
   }
   if (authentication.authenticated) {
-    return (<Route {...props} />)
+    return <Route {...props} />
   }
-  return (null)
+  return <Redirect to={SIGN_IN_PAGE_PATH}/>
 }
 
 SecureRoute.propTypes = {
-  component: PropTypes.oneOfType([Route.propTypes.component, PropTypes.object]),
+  component: PropTypes.elementType,
+  path: PropTypes.string,
 }
 
 export default SecureRoute
