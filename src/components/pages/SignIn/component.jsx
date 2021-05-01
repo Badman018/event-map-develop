@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 
 import { signInEmailRequest, signInGoogleRequest } from '@/actions'
+import { EVENT_MAP_PAGE_PATH } from '@/constants/paths'
 
 import { SignInContainer } from './styles'
 
@@ -34,18 +35,27 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useDispatch()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const dispatch = useDispatch()
   const errorCode = useSelector(state => state.error.errorCode)
   const errorMessage = useSelector(state => state.error.errorMessage)
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated)
 
-  const handlerSignInByEmailAndPassword = () => {
+  const handleSignInByEmailAndPassword = () => {
     dispatch(signInEmailRequest(email, password))
   }
-  const handlerSignInByGoogle = () => {
+  const handleSignInByGoogle = () => {
     dispatch(signInGoogleRequest())
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(EVENT_MAP_PAGE_PATH)
+    }
+  })
 
   return (
     <SignInContainer>
@@ -56,7 +66,7 @@ const SignIn = props => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">Sign in</Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={e => e.preventDefault()}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -67,6 +77,7 @@ const SignIn = props => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
               error={errorCode === 'auth/invalid-email' || false}
               helperText={errorCode === 'auth/invalid-email' && errorMessage}
               onChange={event => setEmail(event.target.value)}
@@ -80,40 +91,33 @@ const SignIn = props => {
               label="Password"
               type="password"
               id="password"
+              value={password}
               autoComplete="current-password"
               error={errorCode === 'auth/wrong-password' || false}
               helperText={errorCode === 'auth/wrong-password' && errorMessage}
               onChange={event => setPassword(event.target.value)}
             />
-            <NavLink
-            to="/main"
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSignInByEmailAndPassword}
             >
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handlerSignInByEmailAndPassword}
-              >
-                Sign In
-              </Button>
-            </NavLink>
+              Sign In
+            </Button>
             <p>or</p>
-            <NavLink
-              to="/main"
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={handleSignInByGoogle}
             >
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handlerSignInByGoogle}
-              >
-                Sign In by Google
-              </Button>
-            </NavLink>
+              Sign In by Google
+            </Button>
           </form>
         </div>
       </Container>

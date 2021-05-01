@@ -5,7 +5,8 @@
   ],
   "plugins": [
     "prettier",
-    "react-hooks"
+    "react-hooks",
+    "react"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -19,6 +20,8 @@
     }
   },
   "rules": {
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
     "arrow-parens": [
       "error",
       "as-needed"
@@ -40,7 +43,7 @@
     "react/jsx-closing-bracket-location": [
       2,
       {
-        "nonEmpty": "tah-aligned"
+        "nonEmpty": "tag-aligned"
       }
     ],
     "react/jsx-max-props-per-line": [

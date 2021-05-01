@@ -1,19 +1,11 @@
 import React from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import { useSelector } from 'react-redux'
 
-import Preloader from '../../common/Preloader/Preloader'
 import BasicLayout from '../../layouts/BasicLayout/component'
 
 import { Container } from './styles'
 
 const Main = () => {
-  const currentUser = useSelector(state => state.user)
-
-  if (!currentUser.isAuthed) {
-    return <Preloader/>
-  }
-
   return (
     <BasicLayout>
       <Container>

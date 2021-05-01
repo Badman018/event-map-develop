@@ -11,6 +11,15 @@ function * userSignInByEmailAndPassword ({ payload }) {
   }
 }
 
+function * userSignOutGoogleAuth () {
+  try {
+    yield signOutFirebase()
+    // yield put(removeUserData())
+  } catch (e) {
+    yield put(setError(e))
+  }
+}
+
 function * userSignInByGoogle () {
   try {
     const userData = yield signInByGoogleFirebase()
@@ -20,17 +29,8 @@ function * userSignInByGoogle () {
   }
 }
 
-function * userSignOut () {
-  try {
-    yield signOutFirebase()
-    yield put(removeUserData())
-  } catch (e) {
-    yield put(setError(e))
-  }
-}
-
 export function * userRequestWatcher () {
   yield takeEvery(SIGN_IN_EMAIL_REQUEST, userSignInByEmailAndPassword)
   yield takeEvery(SIGN_IN_GOOGLE_REQUEST, userSignInByGoogle)
-  yield takeEvery(SIGN_OUT_REQUEST, userSignOut)
+  yield takeEvery(SIGN_OUT_REQUEST, userSignOutGoogleAuth)
 }
