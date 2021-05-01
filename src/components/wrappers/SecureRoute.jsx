@@ -1,30 +1,51 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Route, useHistory } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
+
 import firebase from '@/utils/firebase'
+import { NOT_FOUND_PAGE_PATH } from '@/constants/paths'
+
+import Preloader from '../common/Preloader/Preloader'
 
 const SecureRoute = props => {
-  const history = useHistory()
-  const { path, component } = props
-  const [userProfile, setUserProfile] = useState(null)
+  const [authentication, setAuthState] = useState({
+    authenticated: false,
+    initialized: false,
+  })
+
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    setAuthState({
+      initialized: false,
+      authenticated: false,
+    })
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setUserProfile(user)
-        history.push(path)
+        setAuthState({
+          initialized: true,
+          authenticated: true,
+        })
       } else {
-        setUserProfile(null)
-        history.push('/')
+        setAuthState({
+          initialized: true,
+          authenticated: false,
+        })
       }
     })
+    return () => unsubscribe()
   }, [])
 
-  return userProfile && <Route path={path} component={component} />
+  if (!authentication.initialized) {
+    return <Preloader/>
+  }
+  if (authentication.authenticated) {
+    return <Route {...props} />
+  }
+  return <Redirect to={NOT_FOUND_PAGE_PATH}/>
 }
 
 SecureRoute.propTypes = {
-  path: PropTypes.string,
   component: PropTypes.elementType,
+  path: PropTypes.string,
 }
 
 export default SecureRoute

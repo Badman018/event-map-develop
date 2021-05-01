@@ -1,15 +1,22 @@
-import { SAVE_USER_DATA } from '../actions'
+import { REMOVE_USER_PROFILE, SET_USER_PROFILE } from '../actions'
 
 const initialState = {
-  user: {},
-  isAuthed: false,
+  user: null,
+  isAuthenticated: false,
 }
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SAVE_USER_DATA: {
+    case SET_USER_PROFILE: {
       return {
-        ...state, user: { ...action.payload }, isAuthed: true,
+        ...state, user: { ...action.payload }, isAuthenticated: true,
+      }
+    }
+    case REMOVE_USER_PROFILE: {
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
       }
     }
     default:
