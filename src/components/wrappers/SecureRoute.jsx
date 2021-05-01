@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Redirect, Route } from 'react-router-dom'
 
-import { LinearProgress } from '@material-ui/core'
 import firebase from '@/utils/firebase'
-import { SIGN_IN_PAGE_PATH } from '@/constants/paths'
+import { NOT_FOUND_PAGE_PATH } from '@/constants/paths'
+
+import Preloader from '../common/Preloader/Preloader'
 
 const SecureRoute = props => {
   const [authentication, setAuthState] = useState({
@@ -18,7 +19,6 @@ const SecureRoute = props => {
       authenticated: false,
     })
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      console.log(user)
       if (user) {
         setAuthState({
           initialized: true,
@@ -31,16 +31,16 @@ const SecureRoute = props => {
         })
       }
     })
-    return () => unsubscribe
+    return () => unsubscribe()
   }, [])
 
   if (!authentication.initialized) {
-    return <LinearProgress/>
+    return <Preloader/>
   }
   if (authentication.authenticated) {
     return <Route {...props} />
   }
-  return <Redirect to={SIGN_IN_PAGE_PATH}/>
+  return <Redirect to={NOT_FOUND_PAGE_PATH}/>
 }
 
 SecureRoute.propTypes = {

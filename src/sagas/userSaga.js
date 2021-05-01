@@ -14,7 +14,7 @@ function * userSignInByEmailAndPassword ({ payload }) {
 function * userSignOutGoogleAuth () {
   try {
     yield signOutFirebase()
-    yield put(removeUserData())
+    // yield put(removeUserData())
   } catch (e) {
     yield put(setError(e))
   }
