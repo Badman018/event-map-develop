@@ -10,7 +10,7 @@ import Badge from '@material-ui/core/Badge'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { signOutRequest } from '@/actions/user'
+import { signOutAuth } from '@/actions'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -24,7 +24,7 @@ const Header = () => {
   const userEmail = useSelector(state => state.user.user.email.email)
 
   const handlerClick = () => {
-    dispatch(signOutRequest())
+    dispatch(signOutAuth())
   }
 
   return (
