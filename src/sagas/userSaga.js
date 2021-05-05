@@ -1,5 +1,5 @@
 import { put, takeEvery } from '@redux-saga/core/effects'
-import { removeUserData, saveUserData, setError, SIGN_IN_EMAIL_REQUEST, SIGN_IN_GOOGLE_REQUEST, SIGN_OUT_REQUEST } from '../actions'
+import { saveUserData, setError, SIGN_IN_EMAIL_REQUEST, SIGN_IN_GOOGLE_REQUEST, SIGN_OUT_REQUEST } from '../actions'
 import { signInByEmailFirebase, signInByGoogleFirebase, signOutFirebase } from './../utils/firebase'
 
 function * userSignInByEmailAndPassword ({ payload }) {
@@ -14,7 +14,6 @@ function * userSignInByEmailAndPassword ({ payload }) {
 function * userSignOutGoogleAuth () {
   try {
     yield signOutFirebase()
-    // yield put(removeUserData())
   } catch (e) {
     yield put(setError(e))
   }

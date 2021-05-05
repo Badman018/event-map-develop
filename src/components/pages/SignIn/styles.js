@@ -5,4 +5,7 @@ a {
     width: 100%;
     text-decoration: none;
 }
+p {
+    text-align: center;
+}
 `

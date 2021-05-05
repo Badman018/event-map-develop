@@ -1,24 +1,47 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import Button from '@material-ui/core/Button'
-import { signOutAuth } from '@/actions'
+import { getMarkersRequest } from '@/actions'
+import { removeTemporaryMarker } from '@/actions/events'
+
+import ChangePopup from '../../common/ChangePopup/ChangePopup'
+import Map from '../../mapComponents/Map'
+
+import 'react-leaflet-markercluster/dist/styles.min.css'
 
 const Main = () => {
-  const dispatch = useDispatch()
-  const handleOnClickSignOut = () => {
-    dispatch(signOutAuth())
+  const markers = useSelector(state => state.events.markers)
+  const currentUser = useSelector(state => state.user)
+  const temporaryMarker = useSelector(state => state.events.temporaryMarker)
+  const dispacth = useDispatch()
+
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleOpen = () => setShow(true)
+  const handleRemove = () => {
+    dispacth(removeTemporaryMarker())
+    setShow(false)
   }
+
+  useEffect(() => {
+    dispacth(getMarkersRequest())
+  }, [])
+
   return (
-    <Button
-      type="submit"
-      fullWidth
-      variant="contained"
-      color="primary"
-      onClick={handleOnClickSignOut}
-    >
-      Sign Out
-    </Button>
+    <>
+      <Map
+        markers={markers}
+        currentUser={currentUser}
+        temporaryMarker={temporaryMarker}
+        handleOpen={handleOpen}
+      />
+      <ChangePopup
+      show={show}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      handleRemove={handleRemove}
+      />
+    </>
   )
 }
 
