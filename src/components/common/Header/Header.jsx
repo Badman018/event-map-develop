@@ -11,6 +11,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { signOutAuth } from '@/actions'
+import { removeMarkersData } from '../../../actions/events'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -21,9 +22,10 @@ const useStyles = makeStyles(theme => ({
 const Header = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const userEmail = useSelector(state => state.user.user.email.email)
+  const userEmail = useSelector(state => state.user.userProfile.email)
 
   const handlerClick = () => {
+    dispatch(removeMarkersData())
     dispatch(signOutAuth())
   }
 

@@ -1,26 +1,47 @@
-import React from 'react'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import BasicLayout from '../../layouts/BasicLayout/component'
+import { getMarkersRequest } from '@/actions'
+import { removeTemporaryMarker } from '@/actions/events'
 
-import { Container } from './styles'
+import ChangePopup from '../../common/ChangePopup/ChangePopup'
+import Map from '../../mapComponents/Map'
+
+import 'react-leaflet-markercluster/dist/styles.min.css'
 
 const Main = () => {
+  const markers = useSelector(state => state.events.markers)
+  const currentUser = useSelector(state => state.user)
+  const temporaryMarker = useSelector(state => state.events.temporaryMarker)
+  const dispacth = useDispatch()
+
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleOpen = () => setShow(true)
+  const handleRemove = () => {
+    dispacth(removeTemporaryMarker())
+    setShow(false)
+  }
+
+  useEffect(() => {
+    dispacth(getMarkersRequest())
+  }, [])
+
   return (
-    <BasicLayout>
-      <Container>
-        <MapContainer
-          center={[51.505, -0.09]}
-          zoom={10}
-          scrollWheelZoom={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-        </MapContainer>
-      </Container>
-    </BasicLayout>
+    <>
+      <Map
+        markers={markers}
+        currentUser={currentUser}
+        temporaryMarker={temporaryMarker}
+        handleOpen={handleOpen}
+      />
+      <ChangePopup
+      show={show}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      handleRemove={handleRemove}
+      />
+    </>
   )
 }
 
