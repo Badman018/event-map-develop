@@ -1,51 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
+import { LinearProgress } from '@material-ui/core'
 
-import firebase from '@/utils/firebase'
-import { NOT_FOUND_PAGE_PATH } from '@/constants/paths'
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const isAuth = useSelector(state => state.user.userProfile)
+  const user = localStorage.getItem('uid')
 
-import Preloader from '../common/Preloader/Preloader'
-
-const SecureRoute = props => {
-  const [authentication, setAuthState] = useState({
-    authenticated: false,
-    initialized: false,
-  })
-
-  useEffect(() => {
-    setAuthState({
-      initialized: false,
-      authenticated: false,
-    })
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setAuthState({
-          initialized: true,
-          authenticated: true,
-        })
-      } else {
-        setAuthState({
-          initialized: true,
-          authenticated: false,
-        })
-      }
-    })
-    return () => unsubscribe()
-  }, [])
-
-  if (!authentication.initialized) {
-    return <Preloader/>
-  }
-  if (authentication.authenticated) {
-    return <Route {...props} />
-  }
-  return <Redirect to={NOT_FOUND_PAGE_PATH}/>
+  return (
+    <Route
+      {...rest}
+      render={props => {
+        const params = Object.keys(props.match.params)
+        if (isAuth) return <Component {...props} />
+        if (user) return <LinearProgress />
+        if (params.length > 0) return <Redirect to="/404" />
+        return <Redirect to="/signin" />
+      }}
+    />
+  )
 }
 
-SecureRoute.propTypes = {
-  component: PropTypes.elementType,
-  path: PropTypes.string,
-}
-
-export default SecureRoute
+export default PrivateRoute

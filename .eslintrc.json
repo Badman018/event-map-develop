@@ -20,25 +20,21 @@
     }
   },
   "rules": {
-    "react/jsx-uses-vars": "error",
-    "react/jsx-uses-react": "error",
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ],
+    "react/jsx-uses-vars": "off",
+    "react/jsx-uses-react": "off",
     "semi": "error",
-    "prefer-destructuring": "error",
+    "prefer-destructuring": "off",
     "max-len": [
-      "warn",
+      "off",
       {
         "code": 100,
         "ignoreUrls": true,
         "ignorePattern": "import"
       }
     ],
-    "no-unused-vars": "warn",
-    "operator-linebreak": "warn",
-    "react-hooks/rules-of-hooks": "error",
+    "no-unused-vars": "off",
+    "operator-linebreak": "off",
+    "react-hooks/rules-of-hooks": "off",
     "react/jsx-closing-tag-location": 2,
     "react/jsx-closing-bracket-location": [
       2,
@@ -62,7 +58,7 @@
       }
     ],
     "jsx-quotes": [
-      "error",
+      "off",
       "prefer-double"
     ],
     "comma-dangle": [
@@ -70,7 +66,7 @@
       "always-multiline"
     ],
     "prefer-const": [
-      "error",
+      "off",
       {
         "destructuring": "any",
         "ignoreReadBeforeAssign": false

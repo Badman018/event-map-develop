@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import L from 'leaflet'
 
 import { TextField, Button, Switch, FormControlLabel } from '@material-ui/core'
-import { changeTemporaryMarker, saveNewMarker, removeTemporaryMarker } from '@/actions/events'
+import { changeTemporaryMarker, saveNewMarker, removeTemporaryMarker } from '@/core/store/actions/events'
 import iconMarker from '@/assests/marker.png'
 
 import { Container } from './styles'
@@ -21,47 +21,54 @@ const marker = L.icon({
 
 const TemporaryMarker = props => {
   const dispatch = useDispatch()
-  const [name, setName] = useState(props.popup.name)
+  const [description, setDescription] = useState(props.description)
   const [date, setDate] = useState('')
-  const [isPublic, setIsPublic] = useState(props.privacy.public)
+  const [isPublic, setIsPublic] = useState(props.privacy)
   const [availabilityUsers, setAvailabilityUsers] = useState('')
 
   const handleChangeForm = () => {
-    dispatch(saveNewMarker(
-      props.id,
-      props.currentUser,
-      props.position,
-      { name, date },
-      { isPublic, availabilityUsers },
-      false,
-    ))
+    dispatch(saveNewMarker({
+      id: props.id,
+      author: props.currentUser,
+      coords: props.coords,
+      description,
+      date,
+      privacy: props.privacy,
+      users: props.users,
+      notification: false,
+    }))
     dispatch(removeTemporaryMarker())
   }
   useEffect(() => {
-    dispatch(changeTemporaryMarker(
-      props.id,
-      props.currentUser,
-      props.position,
-      { name, date },
-      { isPublic, availabilityUsers },
-      false),
+    dispatch(changeTemporaryMarker({
+      id: props.id,
+      author: props.currentUser,
+      coords: props.coords,
+      description,
+      privacy: props.privacy,
+      users: props.users,
+      notification: false,
+    }),
     )
-  }, [name, date, isPublic])
+  }, [description, date, isPublic])
 
   return (
     <>
-      <Marker position={props.position}>
+    {console.log(props)}
+      <Marker position={props.coords}>
         <Popup>
-            <form>
-              <Container>
+              <Container style={{ display: 'flex', flexDirection: 'column', rowGap: 20, height: 600, minHeight: 200, padding: 20, overflow: 'auto' }}>
                 <TextField
+                  multiline
+                  variant="outlined"
                   size="small"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
                 />
                 <TextField
                   id="datetime-local"
                   type="datetime-local"
+                  variant="outlined"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -80,6 +87,7 @@ const TemporaryMarker = props => {
                 />
                 <TextField
                   id="avaibility-users"
+                  variant="outlined"
                   type="text"
                   label="Users(comma separated)"
                   value={availabilityUsers}
@@ -93,19 +101,10 @@ const TemporaryMarker = props => {
                   Save event
                 </Button>
               </Container>
-            </form>
         </Popup>
       </Marker>
     </>
   )
-}
-
-TemporaryMarker.propTypes = {
-  id: PropTypes.number,
-  position: PropTypes.array,
-  popup: PropTypes.object,
-  currentUser: PropTypes.string,
-  privacy: PropTypes.object,
 }
 
 export default TemporaryMarker

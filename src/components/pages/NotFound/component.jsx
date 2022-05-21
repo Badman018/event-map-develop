@@ -2,10 +2,10 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { SIGN_IN_PAGE_PATH } from '@/constants/index'
+import { SIGN_IN_PAGE_PATH } from '@/core/constants/index'
 
 import { Wrapper } from './styles'
-import { removeUserData } from '../../../actions'
+import { removeUserData } from '../../../core/store/actions'
 
 const NotFoundPage = props => {
   const dispatch = useDispatch()

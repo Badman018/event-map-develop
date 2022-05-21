@@ -11,8 +11,8 @@ import TextField from '@material-ui/core/TextField'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 
-import { signInEmailRequest, signInGoogleRequest } from '@/actions'
-import { EVENT_MAP_PAGE_PATH } from '@/constants/paths'
+import { signInEmailRequest, signInGoogleRequest } from '@//core/store/actions'
+import { EVENT_MAP_PAGE_PATH } from '@/core/constants/paths'
 
 import { SignInContainer } from './styles'
 
@@ -46,9 +46,11 @@ const SignIn = props => {
 
   const handleSignInByEmailAndPassword = () => {
     dispatch(signInEmailRequest(email, password))
+    localStorage.setItem('uid', email)
   }
   const handleSignInByGoogle = () => {
     dispatch(signInGoogleRequest())
+    localStorage.setItem('uid', email)
   }
 
   useEffect(() => {

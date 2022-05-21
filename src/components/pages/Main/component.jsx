@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getMarkersRequest } from '@/actions'
-import { removeTemporaryMarker } from '@/actions/events'
+import { getMarkersRequest } from '@/core/store/actions'
+import { removeTemporaryMarker } from '@/core/store/actions/events'
 
 import ChangePopup from '../../common/ChangePopup/ChangePopup'
 import Map from '../../mapComponents/Map'

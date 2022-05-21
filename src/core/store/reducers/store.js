@@ -1,11 +1,11 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import { rootSaga } from '@/sagas/index'
+import { rootSaga } from '@/core/store/sagas/index'
 
-import userReducer from './userReducer'
-import errorReducer from './errorReducer'
-import eventsReducer from './eventsReducer'
+import userReducer from './user'
+import errorReducer from './error'
+import eventsReducer from './events'
 
 const sagaMiddleware = createSagaMiddleware()
 

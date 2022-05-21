@@ -3,51 +3,56 @@ import { Marker, Popup } from 'react-leaflet'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 
-import { changeMarkerPopup } from '@/actions/events'
+import { changeMarkerPopup } from '@/core/store/actions/events'
 import { TextField, Switch, FormControlLabel, Button } from '@material-ui/core'
 import { Container } from './styles'
 
 const EventMarker = props => {
+  console.log(props)
+
   const dispatch = useDispatch()
   const [isChange, setIsChange] = useState(false)
-  const [name, setName] = useState(props.popup.name)
-  const [date, setDate] = useState(props.popup.date)
-  const [isChecked, setIsChecked] = useState(props.privacy.isPublic)
+  const [description, setDescription] = useState(props.description)
+  const [date, setDate] = useState(props.date)
+  const [isChecked, setIsChecked] = useState(props.privacy)
   const [userPrivacy, setUserPrivacy] = useState('')
+
   const isAuthor = props.author === props.currentUser
-  const userAvailability = props.privacy.availabilityUsers.some(user => user === props.currentUser)
+  const userAvailability = props.users &&
+  props.users.some(user => user === props.currentUser)
 
   const handleChangeForm = () => {
     if (!isChange) {
       setIsChange(true)
     } else {
       setIsChange(false)
-      dispatch(changeMarkerPopup(
-        props.id,
-        props.currentUser,
-        props.position,
-        { name },
-        props.privacy,
-        false),
+      dispatch(changeMarkerPopup({
+        id: props.id,
+        author: props.currentUser,
+        coords: props.coords,
+        description,
+        privacy: props.privacy,
+        users: props.users,
+        notification: false,
+      }),
       )
     }
   }
   const handleDelete = () => {
-
   }
 
   return (
-    props.privacy.isPublic || userAvailability
+    props.privacy || userAvailability || props.author === props.currentUser
       ? (
         <>
-          <Marker position={props.position}>
-            <Popup>
+          <Marker position={props.coords}>
+            <Popup >
               {
                 !isChange
                   ? (
                       <>
                         <div>
-                          {name}
+                          {description}
                         </div>
                         <div>
                           {date}
@@ -55,15 +60,19 @@ const EventMarker = props => {
                       </>
                     )
                   : (
-                      <form>
-                        <Container>
+                        <Container style={{ display: 'flex', flexDirection: 'column', rowGap: 20, height: 600, minHeight: 200, padding: 20, overflow: 'auto' }}>
                           <TextField
+                            variant="outlined"
+                            fullWidth
+                            multiline
                             label="Name"
                             size="small"
-                            value={name}
-                            onChange={e => setName(e.target.value)}
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
                           />
                           <TextField
+                            variant="outlined"
+                            fullWidth
                             label="Date"
                             id="datetime-local"
                             type="datetime-local"
@@ -85,50 +94,45 @@ const EventMarker = props => {
                             label="Public"
                           />
                           <TextField
+                            variant="outlined"
+                            fullWidth
                             label="User privacy"
                             size="small"
                             value={userPrivacy}
                             onChange={e => setUserPrivacy(e.target.value)}
                           />
                         </Container>
-                      </form>
                     )
               }
-              {isAuthor
-                ? (
-                  <>
+              {isAuthor &&
+                (
+                  <div style={{ display: 'flex', paddingTop: 30 }}>
                     <Button
+                      style={{ marginRight: 20 }}
                       variant="outlined"
+                      fullWidth
                       color="primary"
                       onClick={handleChangeForm}
                     >
                       Change
                     </Button>
                     <Button
+                      fullWidth
                       variant="outlined"
                       color="primary"
                       onClick={handleDelete}
                     >
                       Delete
                     </Button>
-                  </>
-                  )
-                : null}
+                  </div>
+                )
+                }
             </Popup>
           </Marker>
         </>
         )
       : null
   )
-}
-
-EventMarker.propTypes = {
-  id: PropTypes.number,
-  position: PropTypes.array,
-  popup: PropTypes.object,
-  author: PropTypes.string,
-  currentUser: PropTypes.string,
-  privacy: PropTypes.object,
 }
 
 export default EventMarker

@@ -17,6 +17,7 @@ const Map = props => {
           <MapContainer
             center={[51.505, -0.09]}
             zoom={10}
+            maxZoom={30}
             dragging={true}
             animate={true}
             doubleClickZoom={false}
@@ -24,7 +25,6 @@ const Map = props => {
           >
             <MapEvent handleOpen={props.handleOpen}/>
             <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <MarkerClusterGroup
@@ -33,31 +33,38 @@ const Map = props => {
                 opacity: 0,
               }}
             >
+              {console.log(props.markers)}
             {
+
               props.markers.map(markers => (
                 <EventMarker
                   key={markers.id}
                   id={markers.id}
-                  position={markers.position}
-                  popup={markers.popup}
+                  coords={markers.coords}
+                  privacy={markers.privacy}
                   author={markers.author}
                   currentUser={props.currentUser.userProfile.email}
-                  privacy={markers.privacy}
+                  users={markers.users}
+                  description={markers.description}
+                  date={markers.date}
                 />
               ),
               )
             }
+            {}
             {
-              props.temporaryMarker.position
+              props.temporaryMarker.coords
                 ? (
                 <TemporaryMarker
                   key={props.temporaryMarker.id}
                   id={props.temporaryMarker.id}
-                  position={props.temporaryMarker.position}
-                  popup={props.temporaryMarker.popup}
+                  coords={props.temporaryMarker.coords}
+                  privacy={props.temporaryMarker.privacy}
                   author={props.temporaryMarker.author}
                   currentUser={props.currentUser.userProfile.email}
-                  privacy={props.temporaryMarker.privacy}
+                  users={props.temporaryMarker.users}
+                  description={props.temporaryMarker.description}
+                  date={props.temporaryMarker.date}
                 />
                   )
                 : null

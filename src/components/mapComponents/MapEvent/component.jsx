@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useMapEvent } from 'react-leaflet'
-import { changeTemporaryMarker } from '../../../actions/events'
+import { changeTemporaryMarker } from '../../../core/store/actions/events'
 
 const MapEvent = ({ handleOpen }) => {
   const dispatch = useDispatch()
@@ -12,23 +12,19 @@ const MapEvent = ({ handleOpen }) => {
   const temporaryMarker = useSelector(state => state.events.temporaryMarker)
 
   useMapEvent('click', e => {
-    if (temporaryMarker.popup.name || temporaryMarker.popup.date) {
+    if (temporaryMarker.description || temporaryMarker.date) {
       handleOpen()
     } else {
-      dispatch(changeTemporaryMarker(
-        markers.length + 1,
+      dispatch(changeTemporaryMarker({
+        id: markers.length + 1,
         author,
-        [e.latlng.lat, e.latlng.lng],
-        {
-          name: '',
-          date: '',
-        },
-        {
-          public: true,
-          availabilityUsers: [''],
-        },
-        true,
-      ))
+        coords: [e.latlng.lat, e.latlng.lng],
+        description: '',
+        date: '',
+        privacy: false,
+        users: [''],
+        notification: true,
+      }))
     }
   })
   return null

@@ -37,6 +37,7 @@ const ChangePopup = ({ show, handleOpen, handleClose, handleRemove }) => {
         BackdropProps={{
           timeout: 500,
         }}
+        style={{ padding: 20 }}
       >
         <Fade in={show}>
           <div className={classes.paper}>

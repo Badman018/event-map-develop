@@ -1,34 +1,26 @@
-import { CHANGE_MARKER_POPUP, CHANGE_TEMPORARY_MARKER, REMOVE_MARKERS_DATA, REMOVE_TEMPORARY_MARKER, SAVE_MARKERS_DATA, SAVE_NEW_MARKER } from '../actions/events'
+import { CHANGE_MARKER_POPUP, CHANGE_TEMPORARY_MARKER, REMOVE_EVENT_MARKER, REMOVE_MARKERS_DATA, REMOVE_TEMPORARY_MARKER, SAVE_MARKERS_DATA, SAVE_NEW_MARKER } from '../actions/events'
 
 const initialState = {
   markers: [
     {
       id: 0,
       author: 'matvei@gmail.com',
-      position: [51.705, -0.09],
-      popup: {
-        name: 'NameConst',
-        date: '2017-05-04T10:30',
-      },
-      privacy: {
-        isPublic: true,
-        availabilityUsers: ['matvei@gmail.com'],
-      },
+      coords: [51.705, -0.09],
+      description: 'NameConst',
+      date: '2017-05-04T10:30',
+      privacy: true,
+      users: [],
       notifications: false,
     },
   ],
   temporaryMarker: {
-    id: null,
+    id: 0,
     author: '',
-    positon: null,
-    popup: {
-      name: '',
-      date: '',
-    },
-    privacy: {
-      isPublic: true,
-      availabilityUsers: null,
-    },
+    coords: null,
+    date: '',
+    description: '',
+    privacy: true,
+    users: [],
     notifications: false,
   },
 }
@@ -66,17 +58,13 @@ const eventsReducer = (state = initialState, action) => {
       return {
         ...state,
         temporaryMarker: {
-          id: null,
+          id: 0,
           author: '',
-          position: null,
-          popup: {
-            name: '',
-            date: '',
-          },
-          privacy: {
-            isPublic: true,
-            availabilityUsers: null,
-          },
+          coords: null,
+          name: '',
+          date: '',
+          privacy: false,
+          users: [],
           notifications: false,
         },
       }

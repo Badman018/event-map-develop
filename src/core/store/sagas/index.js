@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects'
-import { eventsRequestWatcher } from './eventsSaga'
-import { userRequestWatcher } from './userSaga'
+import { eventsRequestWatcher } from './events'
+import { userRequestWatcher } from './user'
 
 export function * rootSaga () {
   yield all([

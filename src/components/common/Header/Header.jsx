@@ -9,9 +9,10 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import Badge from '@material-ui/core/Badge'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { makeStyles } from '@material-ui/core/styles'
-
-import { signOutAuth } from '@/actions'
-import { removeMarkersData } from '../../../actions/events'
+import PersonIcon from '@material-ui/icons/Person'
+import { signOutAuth } from '@/core/store/actions'
+import { removeMarkersData } from '../../../core/store/actions/events'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -23,10 +24,20 @@ const Header = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const userEmail = useSelector(state => state.user.userProfile.email)
+  const history = useHistory()
 
   const handlerClick = () => {
     dispatch(removeMarkersData())
     dispatch(signOutAuth())
+    localStorage.clear()
+  }
+
+  const handleMapRouteChange = () => {
+    history.push('/main')
+  }
+
+  const handleProfileChange = () => {
+    history.push('/profile/')
   }
 
   return (
@@ -37,15 +48,22 @@ const Header = () => {
         <div>
           <IconButton
             color="inherit"
-            data-testid="mapBtn"
+            onClick={handleMapRouteChange}
           >
             <Badge color="secondary">
               <MapIcon />
             </Badge>
           </IconButton>
+           <IconButton
+            color="inherit"
+            onClick={handleProfileChange}
+           >
+            <Badge color="secondary">
+              <PersonIcon />
+            </Badge>
+           </IconButton>
           <IconButton
             color="inherit"
-            data-testid="settingsBtn"
           >
             <Badge color="secondary">
               <SettingsIcon />
@@ -54,7 +72,6 @@ const Header = () => {
           <IconButton
             color="inherit"
             onClick={handlerClick}
-            data-testid="signOutBtn"
           >
             <Badge color="secondary">
               <ExitToAppIcon />
